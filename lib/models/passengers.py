@@ -1,4 +1,6 @@
+
 class Passenger:
+    all = {}
     def __init__(self, name, age, passport_number, flight_id):
         self.name = name
         self.age = age
@@ -49,5 +51,57 @@ class Passenger:
     def flight_id(self, value):
         if type(value) is int and Flight.find_by_id(value):
             self._flight_id = value
+        else:
+            raise ValueError("flight_id must be an existing Flight ID")
             
+    @classmethod
+    def find_by_id(cls, id):
+        """Return a Passenger object corresponding to the table row matching the specified primary key"""
+        sql = """
+            SELECT *
+            FROM passengers
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (id,))
+        row = CURSOR.fetchone()
+        return cls.instance_from_db(row) if row else None
+    
+    @classmethod
+    def create_table(cls):
+        sql = """
+            CREATE TABLE IF NOT EXISTS passengers (
+            id INTEGER PRIMARY KEY,
+            name TEXT,
+            age INTEGER,
+            passport_number TEXT,
+            flight_id INTEGER,
+            FOREIGN KEY (flight_id) REFERENCES flights(id))
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+    
+    @classmethod
+    def drop_table(cls):
+        sql = """
+            DROP TABLE IF EXISTS passengers;
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+        
+    def save(self):
+        sql = """
+            INSERT INTO passengers (name, age, passport_number, flight_id)
+            VALUES (?,?,?,?)
+        """
+        CURSOR.execute(sql, (self.name, self.age, self.passport_number, self.flight_id))
+        CONN.commit()
+        self.id = CURSOR.lastrowid
+    
+    @classmethod    
+    def create(cls, name, age, passport_number, flight_id):
+        passenger = cls(name, age, passport_number, flight_id)
+        passenger.save()
+        return passenger
+
+from __init__ import CONN, CURSOR
 from flights import Flight

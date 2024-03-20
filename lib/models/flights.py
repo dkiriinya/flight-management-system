@@ -1,5 +1,5 @@
-from __init__ import CONN,CURSOR
 class Flight:
+    all = {}
     def __init__(self, flight_number, departure_airport, departure_time, arrival_time, ticket_price, id=None):
         self.id = id
         self.flight_number = flight_number
@@ -81,3 +81,63 @@ class Flight:
 
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
+    
+    @classmethod
+    def create_table(cls):
+        # flight_number, departure_airport, departure_time, arrival_time, ticket_price
+        sql = """
+            CREATE TABLE IF NOT EXISTS flights (
+            id INTEGER PRIMARY KEY,
+            flight_number TEXT,
+            departure_airport TEXT,
+            departure_time TEXT,
+            arrival_time TEXT,
+            ticket_price INTEGER)
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+    
+    @classmethod   
+    def drop_table(cls):
+        sql = """
+            DROP TABLE IF EXISTS flights;
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+        
+    def save(self):
+        sql = """
+            INSERT INTO flights (flight_number, departure_airport, departure_time, arrival_time, ticket_price)
+            VALUES (?,?,?,?,?)
+        """
+        
+        CURSOR.execute(sql,(self.flight_number,self.departure_airport,self.departure_time,self.arrival_time,self.ticket_price))
+        CONN.commit()
+        self.id = CURSOR.lastrowid
+        type(self).all[self.id] = self
+    
+    @classmethod    
+    def create(cls,flight_number, departure_airport, departure_time, arrival_time, ticket_price):
+        flight = cls(flight_number, departure_airport, departure_time, arrival_time, ticket_price)
+        flight.save()
+        return flight
+    
+    @classmethod
+    def instance_from_db(cls, row):
+        flight = cls.all.get(row[0])
+        if flight:
+            flight.flight_number = row[1]
+            flight.departure_airport = row[2]
+            flight.departure_time = row[3]
+            flight.arrival_time = row[4]
+            flight.ticket_price = row[5]
+            
+        else:
+            flight = cls(row[1],row[2],row[3],row[4],row[5])
+            flight.id = row[0]
+            cls.all[flight.id] = flight
+            
+        return flight
+            
+            
+from __init__ import CONN,CURSOR
