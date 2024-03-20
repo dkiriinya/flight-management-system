@@ -102,6 +102,46 @@ class Passenger:
         passenger = cls(name, age, passport_number, flight_id)
         passenger.save()
         return passenger
+    
+    def update(self):
+        sql = """
+            UPDATE passengers
+            SET name = ?, age = ?, passport_number = ?, flight_id = ?
+            WHERE id = ?
+        """
+        
+        CURSOR.execute(sql, (self.name, self.age, self.passport_number, self.flight_id, self.id))
+        CONN.commit()
+
+    def delete(self):
+        sql = """
+            DELETE FROM passengers
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
+
+        # Delete the dictionary entry using id as the key
+        del type(self).all[self.id]
+
+        # Set the id to None
+        self.id = None
+    
+    @classmethod
+    def instance_from_db(cls, row):
+        passenger = cls.all.get(row[0])
+        if passenger:
+            passenger.name = row[1]
+            passenger.age = row[2]
+            passenger.passport_number = row[3]
+            passenger.flight_id = row[4]
+        
+        else:
+            passenger = cls(row[1],row[2],row[3],row[4])
+            passenger.id = row[0]
+            cls.all[passenger.id] = passenger
+            
+        return passenger
 
 from __init__ import CONN, CURSOR
 from flights import Flight

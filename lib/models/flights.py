@@ -122,6 +122,30 @@ class Flight:
         flight.save()
         return flight
     
+    def update(self):
+        sql = """
+            UPDATE flights
+            SET flight_number = ?, departure_airport = ?, departure_time = ?, arrival_time = ?, ticket_price = ?
+            WHERE id = ?
+        """
+        
+        CURSOR.execute(sql, (self.flight_number, self.departure_airport, self.departure_time, self.arrival_time, self.ticket_price, self.id))
+        CONN.commit()
+
+    def delete(self):
+        sql = """
+            DELETE FROM flights
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
+
+        # Delete the dictionary entry using id as the key
+        del type(self).all[self.id]
+
+        # Set the id to None
+        self.id = None
+        
     @classmethod
     def instance_from_db(cls, row):
         flight = cls.all.get(row[0])
@@ -138,6 +162,34 @@ class Flight:
             cls.all[flight.id] = flight
             
         return flight
-            
+    
+    def passengers(self):
+        sql = """
+            SELECT *
+            FROM passengers
+            WHERE flight_id = ?
+        """
+        CURSOR.execute(sql, (self.id,),)
+
+        rows = CURSOR.fetchall()
+        return [
+            Passenger.instance_from_db(row) for row in rows
+        ]
+    
+    def crews(self):
+        sql = """
+            SELECT *
+            FROM crews
+            WHERE flight_id = ?
+        """
+        CURSOR.execute(sql, (self.id,),)
+
+        rows = CURSOR.fetchall()
+        return [
+            Crew.instance_from_db(row) for row in rows
+        ]
+        
             
 from __init__ import CONN,CURSOR
+from passengers import Passenger
+from crews import Crew

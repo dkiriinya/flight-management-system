@@ -103,6 +103,47 @@ class Crew:
         crew = cls(name, role, experience_level, flight_id)
         crew.save()
         return crew
+    
+    def update(self):
+        sql = """
+            UPDATE crews
+            SET name= ?, role = ?,  experience_level = ?, flight_id = ?
+            WHERE id = ?
+        """
+        
+        CURSOR.execute(sql,(self.name,self.role,self.experience_level,self.flight_id,self.id))
+        CONN.commit()
+        
+    def delete(self):
+        sql = """
+            DELETE FROM crews
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
+
+        # Delete the dictionary entry using id as the key
+        del type(self).all[self.id]
+
+        # Set the id to None
+        self.id = None
+
+    
+    @classmethod
+    def instance_from_db(cls, row):
+        crew = cls.all.get(row[0])
+        if crew:
+            crew.name = row[1]
+            crew.role = row[2]
+            crew.experience = row[3]
+            crew.flight_id = row[4]
+        
+        else:
+            crew = cls(row[1],row[2],row[3],row[4])
+            crew.id = row[0]
+            cls.all[crew.id] = crew
+            
+        return crew
 
 from flights import Flight
 from __init__ import CONN,CURSOR
