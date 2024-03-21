@@ -131,7 +131,7 @@ class Passenger:
     def get_all(cls):
         sql = """
             SELECT *
-            FROM crews
+            FROM passengers
         """
         rows = CURSOR.execute(sql).fetchall()
 
