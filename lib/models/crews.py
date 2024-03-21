@@ -49,7 +49,7 @@ class Crew:
     
     @flight_id.setter
     def flight_id(self, value):
-        if type(value) is int and Flight.find_by_id(value):
+        if isinstance(value,int) and Flight.find_by_id(value):
             self._flight_id = value
         else:
             raise ValueError("flight_id must be an existing Flight ID")
@@ -144,6 +144,41 @@ class Crew:
             cls.all[crew.id] = crew
             
         return crew
+    
+    @classmethod
+    def get_all(cls):
+        sql = """
+            SELECT *
+            FROM crews
+        """
+        rows = CURSOR.execute(sql).fetchall()
+
+        return [cls.instance_from_db(row) for row in rows]
+    
+    @classmethod
+    def find_by_id(cls, id):
+        """Return a Crew object corresponding to the table row matching the specified primary key"""
+        sql = """
+            SELECT *
+            FROM crews
+            WHERE id = ?
+        """
+
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+    
+    @classmethod
+    def find_by_name(cls, name):
+        """Return a Crew object corresponding to first table row matching specified name"""
+        sql = """
+            SELECT *
+            FROM crews
+            WHERE name is ?
+        """
+
+        row = CURSOR.execute(sql, (name,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+
 
 from models.flights import Flight
 from models.__init__ import CONN,CURSOR
