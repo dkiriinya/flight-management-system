@@ -18,9 +18,9 @@ def initialize_database():
     passenger2 = Passenger.create("Bob Smith", 30, "CD789012", flight2.id)
     
     
-from crews import Crew
-from flights import Flight
-from passengers import Passenger
+from models.crews import Crew
+from models.flights import Flight
+from models.passengers import Passenger
 
 initialize_database()
 print("Initialized database with seed data")

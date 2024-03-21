@@ -143,5 +143,5 @@ class Passenger:
             
         return passenger
 
-from __init__ import CONN, CURSOR
-from flights import Flight
+from models.__init__ import CONN, CURSOR
+from models.flights import Flight

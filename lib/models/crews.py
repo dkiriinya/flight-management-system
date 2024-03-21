@@ -145,5 +145,5 @@ class Crew:
             
         return crew
 
-from flights import Flight
-from __init__ import CONN,CURSOR
+from models.flights import Flight
+from models.__init__ import CONN,CURSOR

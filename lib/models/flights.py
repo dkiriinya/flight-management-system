@@ -190,6 +190,6 @@ class Flight:
         ]
         
             
-from __init__ import CONN,CURSOR
-from passengers import Passenger
-from crews import Crew
+from models.__init__ import CONN,CURSOR
+from models.passengers import Passenger
+from models.crews import Crew
