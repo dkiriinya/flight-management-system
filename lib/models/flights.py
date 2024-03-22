@@ -1,5 +1,7 @@
 class Flight:
     all = {}
+    time_pattern = r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$"
+    flight_number_pattern = r"^[A-Z]{3}\d{3}$"
     def __init__(self, flight_number, departure_airport, departure_time, arrival_time, ticket_price, id=None):
         self.id = id
         self.flight_number = flight_number
@@ -20,10 +22,10 @@ class Flight:
     
     @flight_number.setter
     def flight_number(self, value):
-        if isinstance(value, str) and len(value):
+        if re.match(self.flight_number_pattern, value):
             self._flight_number = value
         else:
-            raise ValueError("flight_number must be a non-empty string")
+            raise ValueError("flight_number must be in the format AAA999")
             
     @property
     def departure_airport(self):
@@ -42,10 +44,10 @@ class Flight:
     
     @departure_time.setter
     def departure_time(self, value):
-        if isinstance(value, str) and len(value):
+        if re.match(self.time_pattern, value):
             self._departure_time = value
         else:
-            raise ValueError("value must be a non-empty string")
+            raise ValueError("departure_time must be in the format YYYY-MM-DD HH:MM")
         
     @property
     def arrival_time(self):
@@ -53,10 +55,11 @@ class Flight:
     
     @arrival_time.setter
     def arrival_time(self, value):
-        if isinstance(value, str) and len(value):
+        if re.match(self.time_pattern, value):
             self._arrival_time = value
         else:
-            raise ValueError("arrival_time must be a none-empty string")
+            raise ValueError("arrival_time must be in the format YYYY-MM-DD HH:MM")
+        
         
     @property
     def ticket_price(self):
@@ -227,3 +230,4 @@ class Flight:
 from models.__init__ import CONN,CURSOR
 from models.passengers import Passenger
 from models.crews import Crew
+import re

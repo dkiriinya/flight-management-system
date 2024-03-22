@@ -1,6 +1,7 @@
 
 class Passenger:
     all = {}
+    passport_pattern = r"^[A-Za-z]{2}\d{6}$"
     def __init__(self, name, age, passport_number, flight_id):
         self.name = name
         self.age = age
@@ -38,10 +39,10 @@ class Passenger:
     
     @passport_number.setter
     def passport_number(self, value):
-        if isinstance(value, str) and len(value):
+        if re.match(self.passport_pattern, value):
             self._passport_number = value
         else:
-            raise ValueError("passport_number must be a non-empty string")
+            raise ValueError("passport_number must be in the format of 2 letters followed by 6 numbers (e.g., AB123456)")
             
     @property
     def flight_id(self):
@@ -179,3 +180,4 @@ class Passenger:
 
 from models.__init__ import CONN, CURSOR
 from models.flights import Flight
+import re
