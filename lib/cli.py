@@ -1,32 +1,37 @@
-from helpers import (exit_program,list_crews,
-                     find_crew_by_name,find_crew_by_id,
-                     create_crew,update_crew,delete_crew,
-                     list_flights,find_by_flight_number,
-                     find_flight_by_id,create_flight,
-                     update_flight,delete_flight,
-                     passengers_in_flight,crew_in_flight,
-                     list_passengers,find_passenger_by_name,
-                     find_passenger_by_id,create_passenger,
-                     update_passenger,delete_passenger)
+from helpers import (exit_program, list_crews,
+                     find_crew_by_name, find_crew_by_id,
+                     create_crew, update_crew, delete_crew,
+                     list_flights, find_by_flight_number,
+                     find_flight_by_id, create_flight,
+                     update_flight, delete_flight,
+                     passengers_in_flight, crew_in_flight,
+                     list_passengers, find_passenger_by_name,
+                     find_passenger_by_id, create_passenger,
+                     update_passenger, delete_passenger)
 import os
 from colorama import Fore, Style
 import time
 
 def clear_screen():
+    """Clear the terminal screen"""
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def exit_program():
+    """Exit the program"""
     clear_screen()
     print(Fore.GREEN + "Goodbye!" + Style.RESET_ALL)
     exit()
 
 def print_error(message):
+    """Print an error message"""
     print(Fore.RED + "Error:", message + Style.RESET_ALL)
 
 def print_success(message):
+    """Print a success message"""
     print(Fore.GREEN + "Success:", message + Style.RESET_ALL)
 
 def menu():
+    """Display the main menu"""
     print("Welcome to Airline Management System")
     print("-----------------------------------")
     print("Please select an option:")
@@ -54,6 +59,7 @@ def menu():
     print("-----------------------------------")
 
 def main():
+    """Main function to run the program"""
     while True:
         clear_screen()
         menu()
