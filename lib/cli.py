@@ -103,7 +103,7 @@ def main():
         else:
             print_error("Invalid choice. Please select a valid option.")
             input("Press Enter to continue...")
-        time.sleep(3)
+        time.sleep(5)
 
 if __name__ == "__main__":
     main()
