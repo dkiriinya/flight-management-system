@@ -10,7 +10,7 @@ from helpers import (exit_program, list_crews,
                      update_passenger, delete_passenger)
 import os
 from colorama import Fore, Style
-import time
+
 
 def clear_screen():
     """Clear the terminal screen"""
@@ -117,9 +117,7 @@ def main():
             delete_passenger()
         else:
             print_error("Invalid choice. Please select a valid option.")
-            input("Press Enter to continue...")
         input("Press Enter to continue...")
-        # time.sleep(5)
 
 if __name__ == "__main__":
     main()
