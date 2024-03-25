@@ -95,9 +95,12 @@ def find_flight_by_id():
     
 def create_flight():
     """Create a new flight"""
+    print("flight_number must be in the format AAA999")
     flight_number = input("Enter the flight number: ")
     departure_airport = input("Enter the departure airport: ")
+    print("departure_time must be in the format YYYY-MM-DD HH:MM")
     departure_time = input("Enter the departure_time: ")
+    print("arrival_time must be in the format YYYY-MM-DD HH:MM")
     arrival_time = input("Enter the arrival time: ")
     ticket_price = int(input("Enter the ticket price: "))
     try:
@@ -111,12 +114,15 @@ def update_flight():
     id_ = input("Enter the flight's id: ")
     if flight := Flight.find_by_id(id_):
         try:
+            print("flight_number must be in the format AAA999")
             flight_number = input("Enter the flight number: ")
             flight.flight_number = flight_number
             departure_airport = input("Enter the departure airport: ")
             flight.departure_airport = departure_airport
+            print("departure_time must be in the format YYYY-MM-DD HH:MM")
             departure_time = input("Enter the departure_time: ")
             flight.departure_time = departure_time
+            print("arrival_time must be in the format YYYY-MM-DD HH:MM")
             arrival_time = input("Enter the arrival time: ")
             flight.arrival_time = arrival_time
             ticket_price = int(input("Enter the ticket price: "))
@@ -173,6 +179,7 @@ def create_passenger():
     """Create a new passenger and save to the database"""
     name = input("Enter the passenger's name: ")
     age = int(input("Enter the passenger's age: "))
+    print("passport_number must be in the format of 2 letters followed by 6 numbers (e.g., AB123456)")
     passport_number = input("Enter the passenger's passport number: ")
     flight_id = int(input("Enter the passenger's flight ID: "))
     try:
@@ -190,6 +197,7 @@ def update_passenger():
             passenger.name = name
             age = int(input("Enter the passenger's age: "))
             passenger.age = age
+            print("passport_number must be in the format of 2 letters followed by 6 numbers (e.g., AB123456)")
             passport_number = input("Enter the passenger's passport number: ")
             passenger.passport_number = passport_number
             flight_id = int(input("Enter the passenger's flight ID: "))
