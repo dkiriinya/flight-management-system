@@ -47,8 +47,12 @@ The Flight Management System is a Python-based application designed to manage fl
     ```bash
     cd flight-management-system
     ```
+3. Initialize the database:
+    ```bash
+    python lib/database.py
+    ```
 
-3. Run the application:
+4. Run the application:
     ```bash
     python lib/cli.py
     ```
